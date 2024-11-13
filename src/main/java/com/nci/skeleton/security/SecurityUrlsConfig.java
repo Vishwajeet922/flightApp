@@ -34,6 +34,8 @@ public class SecurityUrlsConfig {
                             "http://localhost:8080", "http://127.0.0.1:8080","http://23319330-flightapp-lb-955427589.eu-central-1.elb.amazonaws.com"));
                     corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     corsConfiguration.setAllowedHeaders(List.of("*"));
+                    corsConfiguration.setAllowCredentials(true);
+                    corsConfiguration.setAllowPrivateNetwork(true);
                     return corsConfiguration;
                 }))
                 .csrf(AbstractHttpConfigurer::disable) // New syntax to disable CSRF
