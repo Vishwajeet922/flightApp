@@ -17,15 +17,10 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const headers = {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "mode": "no-cors",
-    };
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(API_MASTER_DATA_URL, { headers });
+        const response = await fetch(API_MASTER_DATA_URL);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

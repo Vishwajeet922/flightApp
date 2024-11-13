@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080";
+const API_URL = "http://23319330-flightapp-lb-955427589.eu-central-1.elb.amazonaws.com";
 const API_VERSION = "/api/v1";
 const API_BASE_URL = `${API_URL}${API_VERSION}`;
 const API_MASTER_DATA_URL = `${API_BASE_URL}/master`;
