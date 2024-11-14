@@ -77,15 +77,10 @@ const FlightDetails = () => {
             }
 
             setBookingStatus('success');
-            useEffect(() => {
-                const timer = setTimeout(() => {
-                  console.log('Navigating after 2 seconds...');
-                  navigate('/my-bookings'); // Change the route after 2 seconds
-                }, 2000);
-
-                // Cleanup the timeout if the component unmounts
-                return () => clearTimeout(timer);
-              }, [navigate]);
+            setTimeout(() => {
+                            console.log('Navigating after 2 seconds...');
+                            navigate('/my-bookings');
+                        }, 2000);
         } catch (err) {
             setBookingStatus('error');
             console.error('Booking error:', err);

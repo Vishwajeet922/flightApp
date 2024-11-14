@@ -45,7 +45,7 @@ public class BookingService {
             booking.setStatus(STATUS_ACTIVE);
             booking.setBookedOn(LocalDateTime.now());
             booking.setBookedBy(userName);
-            booking.setBookingClass("ECONOMY");
+            booking.setBookingClass(booking.getBookingClass());
             booking.setPrice(booking.getPrice());
             bookingRepository.save(booking);
             User enquiryUser = userRepository.findByUsername(userName).orElse(new User());
