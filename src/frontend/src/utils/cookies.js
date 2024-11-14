@@ -1,7 +1,16 @@
 import Cookies from 'js-cookie';
 
 export const setAuthToken = (token) => {
-  Cookies.set('jwt', token, { expires: 1, secure: true, sameSite: 'strict' });
+  const isProduction = window.location.protocol === 'https:';
+  const domain = window.location.hostname;
+  
+  Cookies.set('jwt', token, {
+    expires: 1,
+    secure: true,
+    sameSite: 'strict',
+    domain: isProduction ? domain : undefined,
+    path: '/'
+  });
 };
 
 export const getAuthToken = () => {

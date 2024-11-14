@@ -1,45 +1,73 @@
-import React from "react";
-import { Outlet, Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
 import avatar from '../assets/clipart.png'
 import icon from '../assets/icon.jpeg';
 
 const Layout = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="bg-gray-800 text-white">
+      <header className="bg-gray-800 text-white relative">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
-            <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0">
-              <img src={icon} alt="Website Logo" className="h-8 w-auto sm:mr-4" />
-              <nav className="w-full sm:w-auto">
-                <ul className="flex flex-wrap justify-center sm:justify-start space-x-4">
-                  <li><Link to="/" className="hover:text-gray-300">Home</Link></li>
-                  <li><Link to="/flights" className="hover:text-gray-300">Flights</Link></li>
+          <div className="flex flex-col lg:flex-row items-center justify-between">
+            <div className="flex w-full lg:w-auto justify-between items-center">
+              <a href="/" className="flex items-center">
+                <img src={icon} alt="Website Logo" className="h-12 mr-4" />
+                <h1 className="font-bold uppercase text-2xl">Flighter</h1>
+              </a>
+              <button
+                className="lg:hidden p-2 focus:outline-none"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              >
+                <div className="w-6 h-0.5 bg-white mb-1.5"></div>
+                <div className="w-6 h-0.5 bg-white mb-1.5"></div>
+                <div className="w-6 h-0.5 bg-white"></div>
+              </button>
+            </div>
+            <div className={`${isMenuOpen ? 'flex' : 'hidden'} lg:flex flex-col lg:flex-row w-full lg:w-auto items-center space-y-4 lg:space-y-0 mt-4 lg:mt-0`}>
+              <nav className="w-full lg:w-auto">
+                <ul className="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0 lg:space-x-10">
+                  <li><Link to="/" className="hover:text-gray-300 text-xl block py-2">Home</Link></li>
+                  <li><Link to="/flights" className="hover:text-gray-300 text-xl block py-2">Flights</Link></li>
                   {!user && (
                     <>
-                      <li><Link to="/login" className="hover:text-gray-300">Login</Link></li>
-                      <li><Link to="/register" className="hover:text-gray-300">Register</Link></li>
+                      <li><Link to="/login" className="hover:text-gray-300 text-xl block py-2">Login</Link></li>
+                      <li><Link to="/register" className="hover:text-gray-300 text-xl block py-2">Register</Link></li>
                     </>
                   )}
                   {user && (
-                    <li><Link to="/my-bookings" className="hover:text-gray-300">My Bookings</Link></li>
+                    <li><Link to="/my-bookings" className="hover:text-gray-300 text-xl block py-2">My Bookings</Link></li>
                   )}
                 </ul>
               </nav>
+              {user && (
+                <div className="flex flex-col lg:flex-row items-center space-y-4 lg:space-y-0 lg:space-x-4 lg:ml-10">
+                  <div className="flex items-center">
+                    <img
+                      src={avatar}
+                      alt="Profile"
+                      className="w-8 h-8 rounded-full mr-2"
+                    />
+                    <span>{user.username}</span>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition duration-300 w-full lg:w-auto"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
-            {user && (
-              <div className="flex items-center">
-                <img
-                  src={avatar}
-                  alt="Profile"
-                  className="w-8 h-8 rounded-full mr-2"
-                />
-                <span>{user.username}</span>
-              </div>
-            )}
           </div>
         </div>
       </header>

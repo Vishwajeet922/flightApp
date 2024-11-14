@@ -22,16 +22,30 @@ const Flights = () => {
         }
         const data = await response.json();
         console.log(data);
-        const fromAirport = decodeURIComponent(searchParams.get('fromAirport') || '');
-        const toAirport = decodeURIComponent(searchParams.get('toAirport') || '');
-        const departDate = searchParams.get('departDate') ? new Date(searchParams.get('departDate')) : null;
+        const fromAirport = searchParams.get('fromAirport');
+        const toAirport = searchParams.get('toAirport');
+        const departDate = searchParams.get('departDate');
+
+        if (!fromAirport && !toAirport && !departDate) {
+          const currentDate = new Date();
+          const fiveDaysFromNow = new Date();
+          fiveDaysFromNow.setDate(currentDate.getDate() + 5);
+
+          const nextFiveDaysFlights = data.filter(flight => {
+            const flightDate = new Date(flight.flyDate);
+            return flightDate >= currentDate && flightDate <= fiveDaysFromNow;
+          });
+
+          setFlights(nextFiveDaysFlights);
+          return;
+        }
 
         const filteredFlights = data.filter(flight => {
           const flightDate = new Date(flight.flyDate);
           return (
-            flight.fromAirport === fromAirport &&
-            flight.toAirport === toAirport &&
-            (departDate ? flightDate >= departDate : true)
+            flight.fromAirport === decodeURIComponent(fromAirport) &&
+            flight.toAirport === decodeURIComponent(toAirport) &&
+            (departDate ? flightDate >= new Date(departDate) : true)
           );
         });
 
